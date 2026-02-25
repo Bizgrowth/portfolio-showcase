@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daniel's Showcase | Technical Demos & MVPs</title>
+    <meta name="description"
+        content="A portfolio showcasing premium technical demos, MVPs, and business apps built by Daniel.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;600;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <!-- Magnetic Cursor Element -->
+    <div class="cursor"></div>
+    <div class="cursor-follower"></div>
+
+    <!-- Dynamic Background Elements -->
+    <div class="bg-gradient-1"></div>
+    <div class="bg-gradient-2"></div>
+
+    <nav class="glass-nav">
+        <div class="nav-content">
+            <div class="logo">Build<span class="text-accent">Showcase</span></div>
+            <ul class="nav-links">
+                <li><a href="#about" class="hover-link">About</a></li>
+                <li><a href="#work" class="hover-link">Work</a></li>
+                <li><a href="#contact" class="hover-link">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <header class="hero">
+            <h1 class="fade-in-up">Crafting Digital <br><span class="text-gradient">Experiences</span></h1>
+            <p class="subtitle fade-in-up delay-1">Explore my collection of MVPs, business applications, and technical
+                builds.</p>
+            <div class="hero-cta fade-in-up delay-2">
+                <a href="#work" class="btn btn-primary">View the Builds</a>
+            </div>
+        </header>
+
+        <section id="work" class="portfolio-section">
+            <div class="section-header fade-in">
+                <h2>Featured <span class="text-accent">Projects</span></h2>
+                <div class="line-decorator"></div>
+            </div>
+
+            <div class="project-grid" id="project-container">
+                <!-- Project cards will be automatically injected here by main.js using data from projects.js -->
+            </div>
+        </section>
+    </main>
+
+    <footer class="glass-footer">
+        <p>&copy; 2026 Daniel's Showcase. Built with premium web aesthetics.</p>
+    </footer>
+
+    <script src="projects.js"></script>
+    <script src="main.js"></script>
+</body>
+
+</html>
