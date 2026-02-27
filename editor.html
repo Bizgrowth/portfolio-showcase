@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Showcase Admin Editor</title>
+    <title>Live Admin Dashboard | Technical Showcase</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600&display=swap"
         rel="stylesheet">
     <style>
@@ -23,6 +23,14 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             padding-bottom: 1rem;
             margin-bottom: 2rem;
+        }
+
+        .settings-panel {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .project-item {
@@ -54,6 +62,7 @@
             border-radius: 6px;
             color: white;
             font-family: 'Inter', sans-serif;
+            box-sizing: border-box;
         }
 
         textarea {
@@ -117,19 +126,46 @@
             line-height: 1.5;
             font-size: 0.95rem;
         }
+
+        .hint {
+            font-size: 0.8rem;
+            color: #a1a1aa;
+            margin-top: 0.25rem;
+        }
+
+        .disabled-btn {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
     </style>
 </head>
 
 <body>
 
-    <h1>Portfolio Visual Editor</h1>
+    <h1>Portfolio Live Admin</h1>
 
     <div class="instructions">
-        <strong>How to use this:</strong>
-        Update, add, or delete your projects using the form below. When you are done, click <strong>"Export
-            projects.js"</strong>.
-        It will download a new file. Just place that file inside your `portfolio-showcase` folder (replacing the old
-        one) and your website will instantly update!
+        <strong>Serverless Editor</strong>
+        <p>You can add your Netlify site repository details below. When you click deploy, this editor will update your
+            <code>projects.js</code> on GitHub directly, triggering a Netlify build. <br />All data stays in your
+            browser.</p>
+    </div>
+
+    <!-- GitHub Settings -->
+    <div class="settings-panel">
+        <h3>Live GitHub Deployment Settings</h3>
+        <p style="color: #a1a1aa; font-size: 0.9rem; margin-bottom: 1rem;">Enter your GitHub details to deploy updates
+            directly to Netlify. Your token is stored locally.</p>
+        <div class="form-group">
+            <label>GitHub Repository</label>
+            <input type="text" id="github-repo" placeholder="username/repository">
+        </div>
+        <div class="form-group">
+            <label>GitHub Personal Access Token (Requires 'repo' scope)</label>
+            <input type="password" id="github-token" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
+        </div>
+        <button class="btn" onclick="saveSettings()" style="margin-top: 0.5rem; background: #7000ff; color: white;">Save
+            Settings Locally</button>
     </div>
 
     <div id="editor-container"></div>
@@ -137,8 +173,8 @@
     <button class="btn btn-add" onclick="addEmptyProject()">+ Add New Project</button>
 
     <div class="action-bar">
-        <button class="btn" onclick="exportData()">💾 Export projects.js</button>
-        <span style="color: #a1a1aa; font-size: 0.9rem;">Runs 100% locally in your browser.</span>
+        <button class="btn" id="save-btn" onclick="exportData()">🚀 Deploy to Live Site</button>
+        <span style="color: #a1a1aa; font-size: 0.9rem;">Auto-generates thumbnails from URLs</span>
     </div>
 
     <!-- Load existing data -->
@@ -148,46 +184,56 @@
         let currentProjects = typeof projectData !== 'undefined' ? [...projectData] : [];
         const container = document.getElementById('editor-container');
 
+        function loadSettings() {
+            const repo = localStorage.getItem('gh_repo') || '';
+            const token = localStorage.getItem('gh_token') || '';
+            document.getElementById('github-repo').value = repo;
+            document.getElementById('github-token').value = token;
+        }
+
+        function saveSettings() {
+            const repo = document.getElementById('github-repo').value.trim();
+            const token = document.getElementById('github-token').value.trim();
+            localStorage.setItem('gh_repo', repo);
+            localStorage.setItem('gh_token', token);
+            alert('Settings saved locally! You can now deploy.');
+        }
+
         function renderEditor() {
             container.innerHTML = '';
 
             currentProjects.forEach((proj, index) => {
-                const projHTML = `
-                    <div class="project-item" id="proj-${index}">
-                        <button class="btn btn-danger" onclick="removeProject(${index})">Delete</button>
+                const projHTML = \`
+                    <div class="project-item" id="proj-\${index}">
+                        <button class="btn btn-danger" onclick="removeProject(\${index})">Delete</button>
                         
-                        <div class="form-group">
+                        <div class="form-group" style="padding-right: 60px;">
                             <label>Title</label>
-                            <input type="text" value="${proj.title || ''}" onchange="updateField(${index}, 'title', this.value)">
+                            <input type="text" value="\${proj.title || ''}" onchange="updateField(\${index}, 'title', this.value)">
                         </div>
                         
                         <div class="form-group">
                             <label>Description (1-2 sentences)</label>
-                            <textarea onchange="updateField(${index}, 'description', this.value)">${proj.description || ''}</textarea>
+                            <textarea onchange="updateField(\${index}, 'description', this.value)">\${proj.description || ''}</textarea>
                         </div>
                         
                         <div class="form-group">
-                            <label>Image Path (e.g. assets/my-image.jpg)</label>
-                            <input type="text" value="${proj.image || ''}" onchange="updateField(${index}, 'image', this.value)">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label>Tags (Comma separated, e.g. React, Node.js, Tailwind)</label>
-                            <input type="text" value="${(proj.tags || []).join(', ')}" onchange="updateTags(${index}, this.value)">
+                            <label>Tags (Comma separated, e.g. React, Tailwind)</label>
+                            <input type="text" value="\${(proj.tags || []).join(', ')}" onchange="updateTags(\${index}, this.value)">
                         </div>
                         
                         <div style="display:flex; gap: 1rem;">
                             <div class="form-group" style="flex:1;">
-                                <label>Live Demo URL</label>
-                                <input type="text" value="${proj.demoLink || '#'}" onchange="updateField(${index}, 'demoLink', this.value)">
+                                <label>Live Demo URL (Required for automated screenshot)</label>
+                                <input type="text" value="\${proj.demoLink || '#'}" placeholder="https://..." onchange="updateField(\${index}, 'demoLink', this.value)">
                             </div>
                             <div class="form-group" style="flex:1;">
                                 <label>Source Code URL</label>
-                                <input type="text" value="${proj.sourceLink || '#'}" onchange="updateField(${index}, 'sourceLink', this.value)">
+                                <input type="text" value="\${proj.sourceLink || '#'}" placeholder="https://..." onchange="updateField(\${index}, 'sourceLink', this.value)">
                             </div>
                         </div>
                     </div>
-                `;
+                \`;
                 container.insertAdjacentHTML('beforeend', projHTML);
             });
         }
@@ -204,8 +250,8 @@
         function addEmptyProject() {
             currentProjects.push({
                 id: "new-proj-" + Date.now(),
-                title: "New Project",
-                description: "",
+                title: "New Demo Project",
+                description: "A description of the new application.",
                 image: "assets/placeholder.jpg",
                 tags: [],
                 demoLink: "#",
@@ -222,7 +268,7 @@
             }
         }
 
-        function exportData() {
+        async function exportData() {
             // Apply stagger delays for animation
             const finalizedData = currentProjects.map((p, i) => {
                 if (i === 0) p.delayClass = "";
@@ -232,29 +278,89 @@
                 return p;
             });
 
-            const content = `/**
+            const content = \`/**
  * Generated by Showcase Visual Editor
  */
 
-const projectData = ${JSON.stringify(finalizedData, null, 4)};
-`;
+const projectData = \${JSON.stringify(finalizedData, null, 4)};\`;
 
-            // Create downloadable blob
-            const blob = new Blob([content], { type: 'text/javascript' });
-            const url = URL.createObjectURL(blob);
+            const repo = localStorage.getItem('gh_repo');
+            const token = localStorage.getItem('gh_token');
+            const path = 'projects.js';
+            
+            if (repo && token) {
+                if (confirm('Deploy updates directly to GitHub? This will trigger a Netlify deployment.')) {
+                    try {
+                        const btn = document.getElementById('save-btn');
+                        btn.innerText = 'Saving to GitHub...';
+                        btn.classList.add('disabled-btn');
+                        btn.disabled = true;
 
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'projects.js';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
+                        // 1. Get file SHA
+                        const getRes = await fetch(\`https://api.github.com/repos/\${repo}/contents/\${path}\`, {
+                            headers: {
+                                'Authorization': \`token \${token}\`,
+                                'Accept': 'application/vnd.github.v3+json'
+                            }
+                        });
+                        
+                        let sha = '';
+                        if (getRes.ok) {
+                            const data = await getRes.json();
+                            sha = data.sha;
+                        } else if (getRes.status !== 404) {
+                            throw new Error('Failed to fetch from GitHub. Check your Repository name and Token.');
+                        }
 
-            alert("Downloaded! Replace the old projects.js file in your folder with this new one.");
+                        // 2. Put new file
+                        const putRes = await fetch(\`https://api.github.com/repos/\${repo}/contents/\${path}\`, {
+                            method: 'PUT',
+                            headers: {
+                                'Authorization': \`token \${token}\`,
+                                'Accept': 'application/vnd.github.v3+json',
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                message: 'Automated Demo Update via Live Admin',
+                                content: btoa(unescape(encodeURIComponent(content))), // Base64 encode safe logic
+                                sha: sha || undefined
+                            })
+                        });
+
+                        if (putRes.ok) {
+                            alert('Successfully deployed to GitHub! Netlify is now building your site.');
+                        } else {
+                            const errorData = await putRes.json();
+                            throw new Error(errorData.message || 'Unknown error saving to GitHub');
+                        }
+                    } catch (err) {
+                        alert('Error: ' + err.message);
+                    } finally {
+                        const btn = document.getElementById('save-btn');
+                        btn.innerText = '🚀 Deploy to Live Site';
+                        btn.classList.remove('disabled-btn');
+                        btn.disabled = false;
+                    }
+                }
+            } else {
+                // Fallback to local download if settings aren't provided
+                const blob = new Blob([content], { type: 'text/javascript' });
+                const url = URL.createObjectURL(blob);
+
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'projects.js';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+
+                alert("Downloaded locally! (Add your GitHub settings above to deploy LIVE directly)");
+            }
         }
 
         // Initialize
+        loadSettings();
         renderEditor();
     </script>
 </body>

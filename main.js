@@ -50,14 +50,18 @@ document.addEventListener('DOMContentLoaded', () => {
             // Build the tech stack tags
             const tagsHTML = project.tags.map(tag => `<span class="tag">${tag}</span>`).join('');
 
+            // Determine URL and Screenshot
+            const targetUrl = project.demoLink && project.demoLink !== '#' ? project.demoLink : (project.sourceLink && project.sourceLink !== '#' ? project.sourceLink : '#');
+            const isPlaceholderUrl = targetUrl === '#';
+            const imageUrl = isPlaceholderUrl ? project.image : `https://image.thum.io/get/width/800/crop/600/${targetUrl}`;
+
             // Construct the html string for the card
             const cardHTML = `
-                <article class="project-card glass-card fade-in-up ${project.delayClass || ''}">
+                <a href="${targetUrl}" target="${isPlaceholderUrl ? '_self' : '_blank'}" rel="noopener noreferrer" class="project-card glass-card fade-in-up ${project.delayClass || ''}" style="text-decoration: none; color: inherit; cursor: none;">
                     <div class="card-image-wrapper">
-                        <img src="${project.image}" alt="${project.title}" class="project-img">
+                        <img src="${imageUrl}" alt="${project.title}" class="project-img" loading="lazy">
                         <div class="card-overlay">
-                            <a href="${project.demoLink}" class="overlay-btn primary" target="_blank">Live Demo</a>
-                            <a href="${project.sourceLink}" class="overlay-btn secondary" target="_blank">Source</a>
+                            <span class="overlay-btn primary">View Project</span>
                         </div>
                     </div>
                     <div class="card-content">
@@ -67,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <h3>${project.title}</h3>
                         <p>${project.description}</p>
                     </div>
-                </article>
+                </a>
             `;
 
             // Insert into the grid
