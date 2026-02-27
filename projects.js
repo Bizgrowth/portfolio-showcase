@@ -59,5 +59,19 @@ const projectData = [
         "demoLink": "https://effortless-lollipop-4fd86e.netlify.app/",
         "sourceLink": "https://effortless-lollipop-4fd86e.netlify.app/",
         "delayClass": ""
+    },
+    {
+        "id": "new-proj-1772221332247",
+        "title": "Smart Prompt Pro",
+        "description": "Smart Prompting Creator ",
+        "image": "assets/placeholder.jpg",
+        "useCustomImage": false,
+        "tags": [
+            "React",
+            "Tailwind"
+        ],
+        "demoLink": "https://smart-prompt-pro.vercel.app/",
+        "sourceLink": "https://smart-prompt-pro.vercel.app/",
+        "delayClass": ""
     }
 ];
