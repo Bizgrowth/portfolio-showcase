@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Determine URL and Screenshot
             const targetUrl = project.demoLink && project.demoLink !== '#' ? project.demoLink : (project.sourceLink && project.sourceLink !== '#' ? project.sourceLink : '#');
             const isPlaceholderUrl = targetUrl === '#';
-            const imageUrl = isPlaceholderUrl ? project.image : `https://image.thum.io/get/width/800/crop/600/${targetUrl}`;
+            const imageUrl = (isPlaceholderUrl || project.useCustomImage) ? project.image : `https://image.thum.io/get/width/800/crop/600/${targetUrl}`;
 
             // Construct the html string for the card
             const cardHTML = `

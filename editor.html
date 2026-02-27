@@ -233,6 +233,18 @@
                                 <input type="text" value="${proj.sourceLink || '#'}" placeholder="https://..." onchange="updateField(${index}, 'sourceLink', this.value)">
                             </div>
                         </div>
+
+                        <div class="form-group" style="margin-top: 1rem; padding-top: 1rem; border-top: 1px dashed rgba(255,255,255,0.1);">
+                            <label style="display: flex; align-items: center; cursor: pointer; color: white;">
+                                <input type="checkbox" style="width: auto; margin-right: 0.5rem;" ${proj.useCustomImage ? 'checked' : ''} onchange="updateField(${index}, 'useCustomImage', this.checked)">
+                                Override automated screenshot with custom image?
+                            </label>
+                            
+                            <div style="margin-top: 1rem; ${proj.useCustomImage ? 'display: block;' : 'display: none;'}">
+                                <label>Custom Image Path (e.g. assets/my-image.jpg)</label>
+                                <input type="text" value="${proj.image || 'assets/placeholder.jpg'}" onchange="updateField(${index}, 'image', this.value)">
+                            </div>
+                        </div>
                     </div>
                 `;
                 container.insertAdjacentHTML('beforeend', projHTML);
@@ -241,6 +253,9 @@
 
         function updateField(index, field, value) {
             currentProjects[index][field] = value;
+            if (field === 'useCustomImage') {
+                renderEditor();
+            }
         }
 
         function updateTags(index, commaString) {
@@ -254,6 +269,7 @@
                 title: "New Demo Project",
                 description: "A description of the new application.",
                 image: "assets/placeholder.jpg",
+                useCustomImage: false,
                 tags: [],
                 demoLink: "#",
                 sourceLink: "#",

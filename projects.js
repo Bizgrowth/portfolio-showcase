@@ -6,14 +6,15 @@
 
 const projectData = [
     {
-        id: "ai-dash",
-        title: "AI Agent Dashboard",
-        description: "A comprehensive dashboard for managing and monitoring autonomous AI agents in real-time, featuring websocket metrics and interactive task assignment.",
+        id: "ai-ops-agent",
+        title: "AI Ops Agent Studio",
+        description: "An interactive client dashboard and Agent Studio for managing AI operations, intake forms, and API services.",
         image: "assets/project1.jpg",
-        tags: ["React", "Node.js", "OpenAI"],
-        demoLink: "#", // Replace '#' with your actual live demo URL
-        sourceLink: "#", // Replace '#' with your GitHub repository URL
-        delayClass: "" // no delay for the first card
+        useCustomImage: true,
+        tags: ["React", "TypeScript", "FastAPI", "Python"],
+        demoLink: "https://aiopsagent.aiopsexpert.com/",
+        sourceLink: "#",
+        delayClass: ""
     },
     {
         id: "fintech-mvp",
