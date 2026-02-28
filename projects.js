@@ -8,7 +8,7 @@ const projectData = [
         "title": "AI Ops Agent Studio",
         "description": "An interactive client dashboard and Agent Studio for managing AI operations, intake forms, and API services.",
         "image": "assets/project1.jpg",
-        "useCustomImage": true,
+        "useCustomImage": false,
         "tags": [
             "React",
             "TypeScript",
@@ -16,21 +16,21 @@ const projectData = [
             "Python"
         ],
         "demoLink": "https://aiopsagent.aiopsexpert.com/",
-        "sourceLink": "#",
+        "sourceLink": "https://aiopsagent.aiopsexpert.com/",
         "delayClass": ""
     },
     {
         "id": "fintech-mvp",
-        "title": "FinTech Analytics MVP",
-        "description": "A high-performance SaaS platform for financial data visualization, bringing real-time data streaming to retail investors.",
+        "title": "AI Lead Qualification Bot ",
+        "description": "Automatically score, qualify, and nurture your leads - Demo by AIopsexpert.com",
         "image": "assets/project2.jpg",
         "tags": [
             "Next.js",
             "Tailwind",
             "Prisma"
         ],
-        "demoLink": "https://delicate-frangollo-0feb83.netlify.app/",
-        "sourceLink": "https://delicate-frangollo-0feb83.netlify.app/",
+        "demoLink": "Delicate-frangollo-0feb83.netlify.app",
+        "sourceLink": "Delicate-frangollo-0feb83.netlify.app",
         "delayClass": "delay-1"
     },
     {
@@ -58,20 +58,6 @@ const projectData = [
         ],
         "demoLink": "https://effortless-lollipop-4fd86e.netlify.app/",
         "sourceLink": "https://effortless-lollipop-4fd86e.netlify.app/",
-        "delayClass": ""
-    },
-    {
-        "id": "new-proj-1772221332247",
-        "title": "Smart Prompt Pro",
-        "description": "Smart Prompting Creator ",
-        "image": "assets/placeholder.jpg",
-        "useCustomImage": false,
-        "tags": [
-            "React",
-            "Tailwind"
-        ],
-        "demoLink": "https://smart-prompt-pro.vercel.app/",
-        "sourceLink": "https://smart-prompt-pro.vercel.app/",
         "delayClass": ""
     }
 ];
