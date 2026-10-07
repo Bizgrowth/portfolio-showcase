@@ -4,383 +4,1372 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Live Admin Dashboard | Technical Showcase</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600&display=swap"
+    <title>Portfolio Admin | URL Importer</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@600;800&display=swap"
         rel="stylesheet">
     <style>
-        body {
-            background-color: #0a0a0c;
-            color: #fff;
-            font-family: 'Inter', sans-serif;
-            padding: 2rem;
-            max-width: 800px;
-            margin: 0 auto;
+        :root {
+            --bg: #07070d;
+            --bg2: #0f0f1a;
+            --surface: rgba(255, 255, 255, 0.04);
+            --surface2: rgba(255, 255, 255, 0.07);
+            --border: rgba(255, 255, 255, 0.1);
+            --border-glow: rgba(124, 58, 237, 0.5);
+            --accent: #7c3aed;
+            --accent2: #00f0ff;
+            --danger: #ef4444;
+            --success: #22c55e;
+            --text: #e2e8f0;
+            --muted: #64748b;
+            --radius: 12px;
         }
 
-        h1 {
-            font-family: 'Outfit', sans-serif;
-            color: #00f0ff;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            padding-bottom: 1rem;
-            margin-bottom: 2rem;
-        }
-
-        .settings-panel {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 1.5rem;
-            border-radius: 12px;
-            margin-bottom: 2rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .project-item {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 1.5rem;
-            border-radius: 12px;
-            margin-bottom: 1.5rem;
-            position: relative;
-        }
-
-        .form-group {
-            margin-bottom: 1rem;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-size: 0.9rem;
-            color: #a1a1aa;
-        }
-
-        input,
-        textarea {
-            width: 100%;
-            padding: 0.75rem;
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 6px;
-            color: white;
-            font-family: 'Inter', sans-serif;
+        * {
             box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
-        textarea {
-            resize: vertical;
-            height: 80px;
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
         }
 
+        /* ── Top Nav ─────────────────────────────── */
+        .admin-nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 2rem;
+            border-bottom: 1px solid var(--border);
+            background: rgba(7, 7, 13, 0.9);
+            backdrop-filter: blur(20px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .admin-logo {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.1rem;
+            color: var(--accent2);
+            letter-spacing: -0.01em;
+        }
+
+        .admin-logo span {
+            color: var(--text);
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+
+        /* ── Layout ──────────────────────────────── */
+        .layout {
+            display: grid;
+            grid-template-columns: 1fr 360px;
+            gap: 0;
+            min-height: calc(100vh - 57px);
+        }
+
+        .main-panel {
+            padding: 2rem;
+            border-right: 1px solid var(--border);
+            overflow-y: auto;
+        }
+
+        .sidebar {
+            padding: 1.5rem;
+            background: var(--bg2);
+            overflow-y: auto;
+        }
+
+        /* ── Buttons ─────────────────────────────── */
         .btn {
-            background: #00f0ff;
-            color: #000;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 6px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.55rem 1.2rem;
+            border-radius: 8px;
+            font-size: 0.875rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s;
-            margin-right: 1rem;
+            border: none;
+            font-family: 'Inter', sans-serif;
         }
 
-        .btn:hover {
-            background: #fff;
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #6d28d9;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 20px rgba(124, 58, 237, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--surface2);
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
         }
 
         .btn-danger {
-            background: #ff3366;
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--danger);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .btn-danger:hover {
+            background: rgba(239, 68, 68, 0.25);
+        }
+
+        .btn-success {
+            background: var(--success);
             color: white;
+        }
+
+        .btn-success:hover {
+            background: #16a34a;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 20px rgba(34, 197, 94, 0.4);
+        }
+
+        .btn-icon {
+            padding: 0.55rem 0.75rem;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+            box-shadow: none !important;
+        }
+
+        /* ── URL Import Wizard ───────────────────── */
+        .import-wizard {
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(0, 240, 255, 0.05));
+            border: 1px solid var(--border-glow);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .import-wizard::before {
+            content: '';
             position: absolute;
-            top: 1.5rem;
-            right: 1.5rem;
-            padding: 0.4rem 0.8rem;
-            font-size: 0.8rem;
+            top: -50%;
+            right: -10%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(124, 58, 237, 0.15), transparent 70%);
+            pointer-events: none;
         }
 
-        .btn-add {
-            background: transparent;
-            border: 1px dashed #00f0ff;
-            color: #00f0ff;
+        .wizard-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--accent2);
+            margin-bottom: 0.5rem;
+        }
+
+        .wizard-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 800;
+            margin-bottom: 0.4rem;
+        }
+
+        .wizard-sub {
+            color: var(--muted);
+            font-size: 0.875rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .url-input-row {
+            display: flex;
+            gap: 0.75rem;
+            position: relative;
+        }
+
+        .url-input-wrap {
+            flex: 1;
+            position: relative;
+        }
+
+        .url-input-wrap svg {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--muted);
+        }
+
+        #url-input {
             width: 100%;
+            padding: 0.85rem 1rem 0.85rem 2.6rem;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+            color: white;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        #url-input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.2);
+        }
+
+        #url-input::placeholder {
+            color: var(--muted);
+        }
+
+        .import-loading {
+            display: none;
+            align-items: center;
+            gap: 0.75rem;
             margin-top: 1rem;
+            color: var(--muted);
+            font-size: 0.875rem;
         }
 
-        .btn-add:hover {
-            background: rgba(0, 240, 255, 0.1);
+        .import-loading.active {
+            display: flex;
         }
 
-        .action-bar {
-            margin-top: 3rem;
-            padding-top: 2rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        .spinner {
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(124, 58, 237, 0.3);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+        }
+
+        .step-indicator {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+        }
+
+        .step-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            transition: all 0.3s;
+        }
+
+        .step-dot.active {
+            background: var(--accent2);
+            border-color: var(--accent2);
+            box-shadow: 0 0 8px var(--accent2);
+        }
+
+        .step-dot.done {
+            background: var(--success);
+            border-color: var(--success);
+        }
+
+        /* ── Preview Card ────────────────────────── */
+        .preview-section {
+            display: none;
+            animation: fadeUp 0.4s ease;
+        }
+
+        .preview-section.visible {
+            display: block;
+        }
+
+        .section-title {
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            color: var(--muted);
+            margin-bottom: 1rem;
+        }
+
+        .edit-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-thumb-wrapper {
+            position: relative;
+            aspect-ratio: 16/9;
+            background: var(--surface2);
+            overflow: hidden;
+        }
+
+        #thumb-preview {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: opacity 0.4s;
+        }
+
+        .thumb-status {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            color: var(--muted);
+            font-size: 0.8rem;
+            background: var(--surface2);
+        }
+
+        .thumb-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(7, 7, 13, 0.8), transparent 50%);
+        }
+
+        .thumb-badges {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            display: flex;
+            gap: 0.4rem;
+            flex-wrap: wrap;
+        }
+
+        .tech-badge {
+            padding: 0.2rem 0.55rem;
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--accent2);
+            backdrop-filter: blur(4px);
+        }
+
+        .thumb-actions {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+        }
+
+        .card-fields {
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .field-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+        }
+
+        .field-group label {
+            font-size: 0.8rem;
+            color: var(--muted);
+            font-weight: 500;
+        }
+
+        .field-group input,
+        .field-group textarea {
+            padding: 0.65rem 0.9rem;
+            background: rgba(0, 0, 0, 0.35);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            outline: none;
+            transition: border-color 0.2s;
+            width: 100%;
+        }
+
+        .field-group input:focus,
+        .field-group textarea:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.15);
+        }
+
+        .field-group textarea {
+            resize: vertical;
+            height: 72px;
+        }
+
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+        }
+
+        .tags-input-wrap {
+            position: relative;
+        }
+
+        .tags-preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.35rem;
+            margin-top: 0.5rem;
+        }
+
+        .tag-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            padding: 0.2rem 0.6rem;
+            background: rgba(124, 58, 237, 0.15);
+            border: 1px solid rgba(124, 58, 237, 0.35);
+            border-radius: 20px;
+            font-size: 0.75rem;
+            color: var(--accent2);
+        }
+
+        .tag-pill button {
+            background: none;
+            border: none;
+            color: var(--muted);
+            cursor: pointer;
+            font-size: 0.7rem;
+            padding: 0;
+            line-height: 1;
+        }
+
+        .tag-pill button:hover {
+            color: var(--danger);
+        }
+
+        .add-action-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        /* ── Project List (sidebar) ──────────────── */
+        .sidebar-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--border);
             display: flex;
             align-items: center;
             justify-content: space-between;
         }
 
-        .instructions {
-            background: rgba(112, 0, 255, 0.2);
-            border: 1px solid #7000ff;
-            padding: 1rem;
+        .proj-count {
+            background: var(--accent);
+            color: white;
+            font-size: 0.7rem;
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            padding: 0.15rem 0.5rem;
+            border-radius: 20px;
+        }
+
+        .proj-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .proj-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .proj-item:hover {
+            background: var(--surface2);
+            border-color: rgba(124, 58, 237, 0.4);
+        }
+
+        .proj-item.active {
+            border-color: var(--accent);
+            background: rgba(124, 58, 237, 0.08);
+        }
+
+        .proj-thumb-mini {
+            width: 48px;
+            height: 34px;
+            object-fit: cover;
+            border-radius: 5px;
+            background: var(--surface2);
+            flex-shrink: 0;
+        }
+
+        .proj-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .proj-name {
+            font-size: 0.82rem;
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .proj-tags-mini {
+            font-size: 0.7rem;
+            color: var(--muted);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .proj-delete {
+            opacity: 0;
+            padding: 0.3rem;
+            background: none;
+            border: none;
+            color: var(--danger);
+            cursor: pointer;
+            border-radius: 4px;
+            transition: opacity 0.2s;
+            flex-shrink: 0;
+        }
+
+        .proj-item:hover .proj-delete {
+            opacity: 1;
+        }
+
+        /* ── Deploy Section ──────────────────────── */
+        .deploy-panel {
+            margin-top: 2rem;
+            padding-top: 1.25rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .deploy-title {
+            font-size: 0.82rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: var(--text);
+        }
+
+        .deploy-inputs {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .deploy-inputs input {
+            padding: 0.55rem 0.85rem;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--border);
             border-radius: 8px;
-            margin-bottom: 2rem;
-            line-height: 1.5;
-            font-size: 0.95rem;
-        }
-
-        .hint {
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
             font-size: 0.8rem;
-            color: #a1a1aa;
-            margin-top: 0.25rem;
+            outline: none;
+            transition: border-color 0.2s;
         }
 
-        .disabled-btn {
-            opacity: 0.6;
-            cursor: not-allowed;
+        .deploy-inputs input:focus {
+            border-color: var(--accent);
+        }
+
+        .deploy-inputs input::placeholder {
+            color: var(--muted);
+        }
+
+        /* ── Status Toast ────────────────────────── */
+        .toast-wrap {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .toast {
+            padding: 0.75rem 1.25rem;
+            border-radius: 10px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            animation: toastIn 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            max-width: 320px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        .toast.success {
+            background: rgba(22, 163, 74, 0.9);
+            color: white;
+            border: 1px solid rgba(34, 197, 94, 0.4);
+        }
+
+        .toast.error {
+            background: rgba(185, 28, 28, 0.9);
+            color: white;
+            border: 1px solid rgba(239, 68, 68, 0.4);
+        }
+
+        .toast.info {
+            background: rgba(124, 58, 237, 0.9);
+            color: white;
+            border: 1px solid rgba(124, 58, 237, 0.4);
+        }
+
+        @keyframes toastIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes toastOut {
+            to {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.4;
+            }
+        }
+
+        .features-detected {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            padding: 0.75rem;
+            background: rgba(0, 240, 255, 0.05);
+            border: 1px solid rgba(0, 240, 255, 0.15);
+            border-radius: 8px;
+            margin-top: 0.5rem;
+        }
+
+        .feature-chip {
+            padding: 0.2rem 0.55rem;
+            background: rgba(0, 240, 255, 0.1);
+            border: 1px solid rgba(0, 240, 255, 0.25);
+            border-radius: 20px;
+            font-size: 0.72rem;
+            color: var(--accent2);
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .feature-chip.detected {
+            animation: pulse 1.5s ease 0s 2;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 2.5rem 1rem;
+            color: var(--muted);
+        }
+
+        .empty-state svg {
+            margin-bottom: 0.75rem;
+            opacity: 0.4;
+        }
+
+        .empty-state p {
+            font-size: 0.85rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .layout {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                border-top: 1px solid var(--border);
+            }
         }
     </style>
 </head>
 
 <body>
 
-    <h1>Portfolio Live Admin</h1>
-
-    <div class="instructions">
-        <strong>Serverless Editor</strong>
-        <p>You can add your Netlify site repository details below. When you click deploy, this editor will update your
-            <code>projects.js</code> on GitHub directly, triggering a Netlify build. <br />All data stays in your
-            browser.
-        </p>
-    </div>
-
-    <!-- GitHub Settings -->
-    <div class="settings-panel">
-        <h3>Live GitHub Deployment Settings</h3>
-        <p style="color: #a1a1aa; font-size: 0.9rem; margin-bottom: 1rem;">Enter your GitHub details to deploy updates
-            directly to Netlify. Your token is stored locally.</p>
-        <div class="form-group">
-            <label>GitHub Repository</label>
-            <input type="text" id="github-repo" placeholder="username/repository">
+    <!-- Top Nav -->
+    <nav class="admin-nav">
+        <div class="admin-logo"><span>Portfolio</span> Admin</div>
+        <div class="nav-actions">
+            <a href="index.html" class="btn btn-secondary" target="_blank">↗ Live Site</a>
+            <button class="btn btn-success" id="deploy-btn" onclick="deployToGitHub()">🚀 Deploy All</button>
         </div>
-        <div class="form-group">
-            <label>GitHub Personal Access Token (Requires 'repo' scope)</label>
-            <input type="password" id="github-token" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
-        </div>
-        <button class="btn" onclick="saveSettings()" style="margin-top: 0.5rem; background: #7000ff; color: white;">Save
-            Settings Locally</button>
-    </div>
+    </nav>
 
-    <div id="editor-container"></div>
+    <div class="layout">
+        <!-- ── Left: Main Panel ──────────────────────────── -->
+        <div class="main-panel">
 
-    <button class="btn btn-add" onclick="addEmptyProject()">+ Add New Project</button>
+            <!-- URL Import Wizard -->
+            <div class="import-wizard">
+                <div class="wizard-label">⚡ Smart URL Importer</div>
+                <h2 class="wizard-title">Paste a URL. We'll do the rest.</h2>
+                <p class="wizard-sub">Auto-generates a screenshot thumbnail, detects tech stack, and pre-fills the card
+                    for you.</p>
 
-    <div class="action-bar">
-        <button class="btn" id="save-btn" onclick="exportData()">🚀 Deploy to Live Site</button>
-        <span style="color: #a1a1aa; font-size: 0.9rem;">Auto-generates thumbnails from URLs</span>
-    </div>
+                <div class="url-input-row">
+                    <div class="url-input-wrap">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                        </svg>
+                        <input type="url" id="url-input" placeholder="https://your-app.netlify.app"
+                            autocomplete="off" />
+                    </div>
+                    <button class="btn btn-primary" id="import-btn" onclick="startImport()">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="13 17 18 12 13 7"></polyline>
+                            <polyline points="6 17 11 12 6 7"></polyline>
+                        </svg>
+                        Import
+                    </button>
+                </div>
 
-    <!-- Load existing data -->
-    <script src="projects.js"></script>
-    <script>
-        // Track the data in memory
-        let currentProjects = typeof projectData !== 'undefined' ? [...projectData] : [];
-        const container = document.getElementById('editor-container');
+                <!-- Step dots -->
+                <div class="step-indicator">
+                    <div class="step-dot" id="step-1"></div>
+                    <div class="step-dot" id="step-2"></div>
+                    <div class="step-dot" id="step-3"></div>
+                </div>
 
-        function loadSettings() {
-            const repo = localStorage.getItem('gh_repo') || '';
-            const token = localStorage.getItem('gh_token') || '';
-            document.getElementById('github-repo').value = repo;
-            document.getElementById('github-token').value = token;
-        }
+                <!-- Loading state -->
+                <div class="import-loading" id="import-loading">
+                    <div class="spinner"></div>
+                    <span id="loading-text">Fetching site data…</span>
+                </div>
+            </div>
 
-        function saveSettings() {
-            const repo = document.getElementById('github-repo').value.trim();
-            const token = document.getElementById('github-token').value.trim();
-            localStorage.setItem('gh_repo', repo);
-            localStorage.setItem('gh_token', token);
-            alert('Settings saved locally! You can now deploy.');
-        }
+            <!-- Preview / Edit Card -->
+            <div class="preview-section" id="preview-section">
+                <div class="section-title">✏️ Edit & Review</div>
 
-        function renderEditor() {
-            container.innerHTML = '';
-
-            currentProjects.forEach((proj, index) => {
-                const projHTML = `
-                    <div class="project-item" id="proj-${index}">
-                        <button class="btn btn-danger" onclick="removeProject(${index})">Delete</button>
-                        
-                        <div class="form-group" style="padding-right: 60px;">
-                            <label>Title</label>
-                            <input type="text" value="${proj.title || ''}" onchange="updateField(${index}, 'title', this.value)">
+                <div class="edit-card">
+                    <!-- Thumbnail -->
+                    <div class="card-thumb-wrapper">
+                        <div class="thumb-status" id="thumb-status">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                <polyline points="21 15 16 10 5 21"></polyline>
+                            </svg>
+                            <span>Thumbnail loads automatically</span>
                         </div>
-                        
-                        <div class="form-group">
-                            <label>Description (1-2 sentences)</label>
-                            <textarea onchange="updateField(${index}, 'description', this.value)">${proj.description || ''}</textarea>
+                        <img id="thumb-preview" src="" alt="Thumbnail" style="display:none;" />
+                        <div class="thumb-overlay"></div>
+                        <div class="thumb-badges" id="thumb-badges"></div>
+                        <div class="thumb-actions">
+                            <button class="btn btn-secondary btn-icon" onclick="refreshThumb()" title="Reload thumbnail"
+                                style="font-size:0.7rem; padding:0.3rem 0.5rem;">↺</button>
                         </div>
-                        
-                        <div class="form-group">
-                            <label>Tags (Comma separated, e.g. React, Tailwind)</label>
-                            <input type="text" value="${(proj.tags || []).join(', ')}" onchange="updateTags(${index}, this.value)">
+                    </div>
+
+                    <!-- Fields -->
+                    <div class="card-fields">
+                        <div class="field-group">
+                            <label>Project Title</label>
+                            <input type="text" id="field-title" placeholder="My Awesome App" />
                         </div>
-                        
-                        <div style="display:flex; gap: 1rem;">
-                            <div class="form-group" style="flex:1;">
-                                <label>Live Demo URL (Required for automated screenshot)</label>
-                                <input type="text" value="${proj.demoLink || '#'}" placeholder="https://..." onchange="updateField(${index}, 'demoLink', this.value)">
+
+                        <div class="field-group">
+                            <label>Description <span style="color:var(--muted); font-weight:400;">(1–2
+                                    sentences)</span></label>
+                            <textarea id="field-desc" placeholder="What does this app do and who is it for?"></textarea>
+                        </div>
+
+                        <!-- Detected Features -->
+                        <div id="features-wrap" style="display:none;">
+                            <div class="field-group">
+                                <label>Detected Features</label>
+                                <div class="features-detected" id="features-list"></div>
                             </div>
-                            <div class="form-group" style="flex:1;">
+                        </div>
+
+                        <div class="field-group tags-input-wrap">
+                            <label>Tech Stack Tags <span style="color:var(--muted); font-weight:400;">(press Enter or
+                                    comma to add)</span></label>
+                            <input type="text" id="field-tags-input" placeholder="e.g. React, Node.js, Tailwind…" />
+                            <div class="tags-preview" id="tags-preview"></div>
+                        </div>
+
+                        <div class="two-col">
+                            <div class="field-group">
+                                <label>Live Demo URL</label>
+                                <input type="url" id="field-demo" placeholder="https://…" />
+                            </div>
+                            <div class="field-group">
                                 <label>Source Code URL</label>
-                                <input type="text" value="${proj.sourceLink || '#'}" placeholder="https://..." onchange="updateField(${index}, 'sourceLink', this.value)">
-                            </div>
-                        </div>
-
-                        <div class="form-group" style="margin-top: 1rem; padding-top: 1rem; border-top: 1px dashed rgba(255,255,255,0.1);">
-                            <label style="display: flex; align-items: center; cursor: pointer; color: white;">
-                                <input type="checkbox" style="width: auto; margin-right: 0.5rem;" ${proj.useCustomImage ? 'checked' : ''} onchange="updateField(${index}, 'useCustomImage', this.checked)">
-                                Override automated screenshot with custom image?
-                            </label>
-                            
-                            <div style="margin-top: 1rem; ${proj.useCustomImage ? 'display: block;' : 'display: none;'}">
-                                <label>Custom Image Path (e.g. assets/my-image.jpg)</label>
-                                <input type="text" value="${proj.image || 'assets/placeholder.jpg'}" onchange="updateField(${index}, 'image', this.value)">
+                                <input type="url" id="field-source" placeholder="https://github.com/…" />
                             </div>
                         </div>
                     </div>
-                `;
-                container.insertAdjacentHTML('beforeend', projHTML);
+                </div>
+
+                <div class="add-action-row">
+                    <button class="btn btn-primary" onclick="addCurrentProject()">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                        Add to Showcase
+                    </button>
+                    <button class="btn btn-secondary" onclick="clearForm()">Clear</button>
+                </div>
+            </div>
+
+            <!-- Deploy Settings -->
+            <details style="margin-top:1rem;">
+                <summary
+                    style="cursor:pointer; font-size:0.85rem; color:var(--muted); user-select:none; padding:0.5rem 0;">⚙
+                    GitHub Deploy Settings</summary>
+                <div style="padding:1rem 0; display:flex; flex-direction:column; gap:0.75rem;">
+                    <div class="field-group">
+                        <label>GitHub Repo (username/repo-name)</label>
+                        <input type="text" id="gh-repo" placeholder="yourname/portfolio-showcase" />
+                    </div>
+                    <div class="field-group">
+                        <label>Personal Access Token (repo scope)</label>
+                        <input type="password" id="gh-token" placeholder="ghp_xxxxxxxxx" />
+                    </div>
+                    <button class="btn btn-secondary" onclick="saveGhSettings()" style="align-self:flex-start;">Save
+                        Settings</button>
+                </div>
+            </details>
+        </div>
+
+        <!-- ── Right: Sidebar ──────────────────────── -->
+        <div class="sidebar">
+            <div class="sidebar-title">
+                <span>Projects</span>
+                <span class="proj-count" id="proj-count">0</span>
+            </div>
+
+            <div class="proj-list" id="proj-list">
+                <div class="empty-state">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="1.5">
+                        <rect x="3" y="3" width="18" height="18" rx="2" />
+                        <path d="M3 9h18M9 21V9" />
+                    </svg>
+                    <p>No projects yet.<br>Paste a URL above to get started.</p>
+                </div>
+            </div>
+
+            <!-- Deploy Panel -->
+            <div class="deploy-panel">
+                <div class="deploy-title">🚀 Quick Deploy</div>
+                <p style="font-size:0.78rem; color:var(--muted); margin-bottom:0.75rem;">Pushes all <strong
+                        id="proj-count-2">0</strong> projects to GitHub → triggers Netlify build.</p>
+                <button class="btn btn-success" style="width:100%;" onclick="deployToGitHub()">Deploy Live Site</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-wrap" id="toast-wrap"></div>
+
+    <!-- Load existing project data -->
+    <script src="projects.js"></script>
+
+    <script>
+        // ═══════════════════════════════════════════════
+        //  STATE
+        // ═══════════════════════════════════════════════
+        let currentProjects = typeof projectData !== 'undefined' ? [...projectData] : [];
+        let currentTags = [];
+        let currentThumbUrl = '';
+        let editingIndex = -1; // -1 means adding new
+
+        // ═══════════════════════════════════════════════
+        //  INIT
+        // ═══════════════════════════════════════════════
+        loadGhSettings();
+        renderSidebar();
+
+        // Tag input - add on Enter or comma
+        document.getElementById('field-tags-input').addEventListener('keydown', function (e) {
+            if (e.key === 'Enter' || e.key === ',') {
+                e.preventDefault();
+                const val = this.value.replace(/,/g, '').trim();
+                if (val) addTag(val);
+                this.value = '';
+            }
+        });
+
+        // ═══════════════════════════════════════════════
+        //  URL IMPORT FLOW
+        // ═══════════════════════════════════════════════
+        async function startImport() {
+            const url = document.getElementById('url-input').value.trim();
+            if (!url || !url.startsWith('http')) return toast('Please enter a valid URL starting with http(s)://', 'error');
+
+            const btn = document.getElementById('import-btn');
+            const loading = document.getElementById('import-loading');
+            const loadingText = document.getElementById('loading-text');
+
+            btn.disabled = true;
+            loading.classList.add('active');
+            setStep(0);
+
+            // Step 1: Generate thumbnail
+            loadingText.textContent = 'Generating screenshot thumbnail…';
+            setStep(1);
+            const thumb = await generateThumbnail(url);
+
+            // Step 2: Detect features from URL/metadata
+            loadingText.textContent = 'Detecting tech stack & features…';
+            setStep(2);
+            await sleep(600); // brief pause for UX
+            const features = detectFeaturesFromUrl(url);
+
+            // Step 3: Auto-fill title from URL
+            loadingText.textContent = 'Building your card…';
+            setStep(3);
+            await sleep(400);
+
+            // Show preview
+            fillForm(url, thumb, features);
+            loading.classList.remove('active');
+            btn.disabled = false;
+            toast('Card ready! Review and click "Add to Showcase"', 'success');
+        }
+
+        async function generateThumbnail(url) {
+            // Use thum.io - same service already used in main.js
+            const thumbUrl = `https://image.thum.io/get/width/800/crop/500/${url}`;
+            currentThumbUrl = thumbUrl;
+
+            // Set a short visible check
+            return new Promise((resolve) => {
+                const img = new Image();
+                img.onload = () => resolve(thumbUrl);
+                img.onerror = () => resolve(thumbUrl); // still use it even if fails
+                img.src = thumbUrl;
+                // timeout fallback
+                setTimeout(() => resolve(thumbUrl), 4000);
             });
         }
 
-        function updateField(index, field, value) {
-            currentProjects[index][field] = value;
-            if (field === 'useCustomImage') {
-                renderEditor();
+        function detectFeaturesFromUrl(url) {
+            const lower = url.toLowerCase();
+            const features = [];
+
+            // Hosting detection
+            if (lower.includes('netlify')) features.push({ label: 'Netlify', icon: '▲' });
+            if (lower.includes('vercel')) features.push({ label: 'Vercel', icon: '▲' });
+            if (lower.includes('github.io')) features.push({ label: 'GitHub Pages', icon: '🐱' });
+            if (lower.includes('railway')) features.push({ label: 'Railway', icon: '🚂' });
+            if (lower.includes('render')) features.push({ label: 'Render', icon: '☁️' });
+            if (lower.includes('fly.io')) features.push({ label: 'Fly.io', icon: '✈️' });
+            if (lower.includes('herokuapp')) features.push({ label: 'Heroku', icon: '🟣' });
+            if (lower.includes('webflow')) features.push({ label: 'Webflow', icon: '🌊' });
+            if (lower.includes('framer')) features.push({ label: 'Framer', icon: '◈' });
+
+            // Keywords in path
+            if (lower.includes('react') || lower.includes('app')) features.push({ label: 'React', icon: '⚛️' });
+            if (lower.includes('next') || lower.includes('nextjs')) features.push({ label: 'Next.js', icon: '▲' });
+            if (lower.includes('vue')) features.push({ label: 'Vue', icon: '💚' });
+            if (lower.includes('svelte')) features.push({ label: 'Svelte', icon: '🔥' });
+            if (lower.includes('django') || lower.includes('python')) features.push({ label: 'Python', icon: '🐍' });
+            if (lower.includes('api') || lower.includes('fastapi')) features.push({ label: 'REST API', icon: '🔌' });
+            if (lower.includes('ai') || lower.includes('ml') || lower.includes('gpt')) features.push({ label: 'AI / ML', icon: '🤖' });
+            if (lower.includes('dashboard')) features.push({ label: 'Dashboard', icon: '📊' });
+            if (lower.includes('shop') || lower.includes('store') || lower.includes('ecomm')) features.push({ label: 'E-commerce', icon: '🛒' });
+            if (lower.includes('map') || lower.includes('geo')) features.push({ label: 'Maps / Geo', icon: '🗺️' });
+            if (lower.includes('chat') || lower.includes('bot')) features.push({ label: 'Chatbot', icon: '💬' });
+            if (lower.includes('real-estate') || lower.includes('realty') || lower.includes('property')) features.push({ label: 'Real Estate', icon: '🏠' });
+            if (lower.includes('finance') || lower.includes('fintech') || lower.includes('crypto')) features.push({ label: 'FinTech', icon: '💰' });
+            if (lower.includes('saas')) features.push({ label: 'SaaS', icon: '☁️' });
+
+            // Always add "Live Demo" if no match
+            if (features.length === 0) features.push({ label: 'Web App', icon: '🌐' });
+
+            return features;
+        }
+
+        function fillForm(url, thumbUrl, features) {
+            // Extract a probable title from the URL
+            const domain = url.replace(/^https?:\/\//, '').split('/')[0];
+            const parts = domain.split('.');
+            const rawName = parts.length >= 2 ? parts[parts.length - 2] : parts[0];
+            const titleGuess = rawName.replace(/[-_]/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+
+            document.getElementById('field-title').value = titleGuess;
+            document.getElementById('field-demo').value = url;
+            document.getElementById('field-source').value = '';
+            document.getElementById('field-desc').value = '';
+
+            // Thumbnail
+            const thumbImg = document.getElementById('thumb-preview');
+            const thumbStatus = document.getElementById('thumb-status');
+            thumbImg.src = thumbUrl;
+            thumbImg.style.display = 'block';
+            thumbStatus.style.display = 'none';
+            currentThumbUrl = thumbUrl;
+
+            // Tech tag suggestions from detected features
+            currentTags = features.map(f => f.label);
+            renderTagPills();
+
+            // Feature chips
+            const featuresWrap = document.getElementById('features-wrap');
+            const featuresList = document.getElementById('features-list');
+            if (features.length > 0) {
+                featuresList.innerHTML = features.map(f =>
+                    `<span class="feature-chip detected">${f.icon} ${f.label}</span>`
+                ).join('');
+                featuresWrap.style.display = 'block';
+            }
+
+            // Badges on thumbnail
+            const badges = document.getElementById('thumb-badges');
+            badges.innerHTML = currentTags.slice(0, 4).map(t => `<span class="tech-badge">${t}</span>`).join('');
+
+            document.getElementById('preview-section').classList.add('visible');
+            document.getElementById('preview-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function setStep(n) {
+            ['step-1', 'step-2', 'step-3'].forEach((id, i) => {
+                const dot = document.getElementById(id);
+                if (i + 1 < n) dot.className = 'step-dot done';
+                else if (i + 1 === n) dot.className = 'step-dot active';
+                else dot.className = 'step-dot';
+            });
+        }
+
+        function refreshThumb() {
+            const url = document.getElementById('field-demo').value || document.getElementById('url-input').value;
+            if (!url) return;
+            const t = Date.now(); // cache-bust
+            const thumbUrl = `https://image.thum.io/get/width/800/crop/500/${url}?t=${t}`;
+            const thumbImg = document.getElementById('thumb-preview');
+            thumbImg.src = thumbUrl;
+            thumbImg.style.display = 'block';
+            document.getElementById('thumb-status').style.display = 'none';
+            currentThumbUrl = thumbUrl;
+        }
+
+        // ═══════════════════════════════════════════════
+        //  TAG MANAGEMENT
+        // ═══════════════════════════════════════════════
+        function addTag(val) {
+            if (!currentTags.includes(val)) {
+                currentTags.push(val);
+                renderTagPills();
+                updateThumbBadges();
             }
         }
 
-        function updateTags(index, commaString) {
-            const tagsArray = commaString.split(',').map(s => s.trim()).filter(s => s !== '');
-            currentProjects[index].tags = tagsArray;
+        function removeTag(i) {
+            currentTags.splice(i, 1);
+            renderTagPills();
+            updateThumbBadges();
         }
 
-        function addEmptyProject() {
-            currentProjects.push({
-                id: "new-proj-" + Date.now(),
-                title: "New Demo Project",
-                description: "A description of the new application.",
-                image: "assets/placeholder.jpg",
+        function renderTagPills() {
+            const wrap = document.getElementById('tags-preview');
+            wrap.innerHTML = currentTags.map((t, i) =>
+                `<span class="tag-pill">${t}<button onclick="removeTag(${i})">✕</button></span>`
+            ).join('');
+        }
+
+        function updateThumbBadges() {
+            const badges = document.getElementById('thumb-badges');
+            badges.innerHTML = currentTags.slice(0, 4).map(t => `<span class="tech-badge">${t}</span>`).join('');
+        }
+
+        // ═══════════════════════════════════════════════
+        //  ADD / EDIT PROJECT
+        // ═══════════════════════════════════════════════
+        function addCurrentProject() {
+            const title = document.getElementById('field-title').value.trim();
+            const desc = document.getElementById('field-desc').value.trim();
+            const demo = document.getElementById('field-demo').value.trim();
+            const source = document.getElementById('field-source').value.trim() || '#';
+
+            if (!title) return toast('Please enter a project title.', 'error');
+            if (!demo) return toast('Please enter the Live Demo URL.', 'error');
+
+            // Use auto thumb from demo URL
+            const thumbUrl = `https://image.thum.io/get/width/800/crop/600/${demo}`;
+
+            const proj = {
+                id: 'proj-' + Date.now(),
+                title,
+                description: desc || 'A web application demo.',
+                image: thumbUrl,
                 useCustomImage: false,
-                tags: [],
-                demoLink: "#",
-                sourceLink: "#",
-                delayClass: ""
-            });
-            renderEditor();
-        }
+                tags: [...currentTags],
+                demoLink: demo,
+                sourceLink: source,
+                delayClass: ''
+            };
 
-        function removeProject(index) {
-            if (confirm("Are you sure you want to delete this project?")) {
-                currentProjects.splice(index, 1);
-                renderEditor();
+            if (editingIndex >= 0) {
+                proj.id = currentProjects[editingIndex].id;
+                currentProjects[editingIndex] = proj;
+                editingIndex = -1;
+                toast('Project updated!', 'success');
+            } else {
+                currentProjects.push(proj);
+                toast(`"${title}" added to showcase!`, 'success');
             }
+
+            renderSidebar();
+            clearForm();
         }
 
-        async function exportData() {
-            // Apply stagger delays for animation
-            const finalizedData = currentProjects.map((p, i) => {
-                if (i === 0) p.delayClass = "";
-                else if (i === 1) p.delayClass = "delay-1";
-                else if (i === 2) p.delayClass = "delay-2";
-                else p.delayClass = ""; // Reset after 3 to avoid extreme delays
-                return p;
-            });
+        function clearForm() {
+            document.getElementById('url-input').value = '';
+            document.getElementById('field-title').value = '';
+            document.getElementById('field-desc').value = '';
+            document.getElementById('field-demo').value = '';
+            document.getElementById('field-source').value = '';
+            document.getElementById('field-tags-input').value = '';
+            currentTags = [];
+            currentThumbUrl = '';
+            editingIndex = -1;
+            renderTagPills();
+            document.getElementById('thumb-preview').style.display = 'none';
+            document.getElementById('thumb-status').style.display = 'flex';
+            document.getElementById('features-wrap').style.display = 'none';
+            document.getElementById('thumb-badges').innerHTML = '';
+            document.getElementById('preview-section').classList.remove('visible');
+            setStep(0);
+        }
 
-            const content = `/**
- * Generated by Showcase Visual Editor
- */
+        function editProject(index) {
+            const proj = currentProjects[index];
+            editingIndex = index;
 
-const projectData = ${JSON.stringify(finalizedData, null, 4)};`;
+            document.getElementById('field-title').value = proj.title;
+            document.getElementById('field-desc').value = proj.description;
+            document.getElementById('field-demo').value = proj.demoLink || '';
+            document.getElementById('field-source').value = proj.sourceLink !== '#' ? proj.sourceLink : '';
+            document.getElementById('url-input').value = proj.demoLink || '';
+            currentTags = [...(proj.tags || [])];
+            renderTagPills();
+
+            // Show thumb
+            const thumbUrl = `https://image.thum.io/get/width/800/crop/500/${proj.demoLink || ''}`;
+            const thumbImg = document.getElementById('thumb-preview');
+            thumbImg.src = thumbUrl;
+            thumbImg.style.display = 'block';
+            document.getElementById('thumb-status').style.display = 'none';
+            updateThumbBadges();
+            document.getElementById('features-wrap').style.display = 'none';
+            document.getElementById('preview-section').classList.add('visible');
+            document.getElementById('preview-section').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function deleteProject(index) {
+            if (!confirm(`Delete "${currentProjects[index].title}"?`)) return;
+            currentProjects.splice(index, 1);
+            renderSidebar();
+            toast('Project removed.', 'info');
+        }
+
+        // ═══════════════════════════════════════════════
+        //  SIDEBAR RENDER
+        // ═══════════════════════════════════════════════
+        function renderSidebar() {
+            const list = document.getElementById('proj-list');
+            const count = currentProjects.length;
+            document.getElementById('proj-count').textContent = count;
+            document.getElementById('proj-count-2').textContent = count;
+
+            if (count === 0) {
+                list.innerHTML = `<div class="empty-state">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+                    <p>No projects yet.<br>Paste a URL above to get started.</p>
+                </div>`;
+                return;
+            }
+
+            list.innerHTML = currentProjects.map((proj, i) => {
+                const demo = proj.demoLink && proj.demoLink !== '#' ? proj.demoLink : null;
+                const thumb = demo ? `https://image.thum.io/get/width/120/crop/80/${demo}` : '';
+                const tagsStr = (proj.tags || []).join(', ') || 'No tags';
+                return `
+                    <div class="proj-item ${editingIndex === i ? 'active' : ''}" onclick="editProject(${i})">
+                        <img class="proj-thumb-mini" src="${thumb}" alt="${proj.title}" onerror="this.style.display='none'" />
+                        <div class="proj-info">
+                            <div class="proj-name">${proj.title}</div>
+                            <div class="proj-tags-mini">${tagsStr}</div>
+                        </div>
+                        <button class="proj-delete" onclick="event.stopPropagation(); deleteProject(${i})" title="Delete">✕</button>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // ═══════════════════════════════════════════════
+        //  GITHUB DEPLOY
+        // ═══════════════════════════════════════════════
+        function saveGhSettings() {
+            const repo = document.getElementById('gh-repo').value.trim();
+            const token = document.getElementById('gh-token').value.trim();
+            localStorage.setItem('gh_repo', repo);
+            localStorage.setItem('gh_token', token);
+            toast('GitHub settings saved locally.', 'success');
+        }
+
+        function loadGhSettings() {
+            const repo = localStorage.getItem('gh_repo') || '';
+            const token = localStorage.getItem('gh_token') || '';
+            if (document.getElementById('gh-repo')) document.getElementById('gh-repo').value = repo;
+            if (document.getElementById('gh-token')) document.getElementById('gh-token').value = token;
+        }
+
+        async function deployToGitHub() {
+            // Assign stagger delay classes
+            const finalData = currentProjects.map((p, i) => ({
+                ...p,
+                delayClass: i === 1 ? 'delay-1' : i === 2 ? 'delay-2' : ''
+            }));
+
+            const content = `/**\n * Generated by Portfolio Admin – URL Importer\n * Updated: ${new Date().toISOString()}\n */\n\nconst projectData = ${JSON.stringify(finalData, null, 4)};`;
 
             const repo = localStorage.getItem('gh_repo');
             const token = localStorage.getItem('gh_token');
-            const path = 'projects.js';
 
-            if (repo && token) {
-                if (confirm('Deploy updates directly to GitHub? This will trigger a Netlify deployment.')) {
-                    try {
-                        const btn = document.getElementById('save-btn');
-                        btn.innerText = 'Saving to GitHub...';
-                        btn.classList.add('disabled-btn');
-                        btn.disabled = true;
-
-                        // 1. Get file SHA
-                        const cleanRepo = repo.replace('https://github.com/', '').trim();
-                        const getRes = await fetch(`https://api.github.com/repos/${cleanRepo}/contents/${path}`, {
-                            headers: {
-                                'Authorization': `token ${token}`,
-                                'Accept': 'application/vnd.github.v3+json'
-                            }
-                        });
-
-                        let sha = '';
-                        if (getRes.ok) {
-                            const data = await getRes.json();
-                            sha = data.sha;
-                        } else if (getRes.status !== 404) {
-                            throw new Error('Failed to fetch from GitHub. Check your Repository name and Token.');
-                        }
-
-                        // 2. Put new file
-                        const putRes = await fetch(`https://api.github.com/repos/${cleanRepo}/contents/${path}`, {
-                            method: 'PUT',
-                            headers: {
-                                'Authorization': `token ${token}`,
-                                'Accept': 'application/vnd.github.v3+json',
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify({
-                                message: 'Automated Demo Update via Live Admin',
-                                content: btoa(unescape(encodeURIComponent(content))), // Base64 encode safe logic
-                                sha: sha || undefined
-                            })
-                        });
-
-                        if (putRes.ok) {
-                            alert('Successfully deployed to GitHub! Netlify is now building your site.');
-                        } else {
-                            const errorData = await putRes.json();
-                            throw new Error(errorData.message || 'Unknown error saving to GitHub');
-                        }
-                    } catch (err) {
-                        alert('Error: ' + err.message);
-                    } finally {
-                        const btn = document.getElementById('save-btn');
-                        btn.innerText = '🚀 Deploy to Live Site';
-                        btn.classList.remove('disabled-btn');
-                        btn.disabled = false;
-                    }
-                }
-            } else {
-                // Fallback to local download if settings aren't provided
+            if (!repo || !token) {
+                // Download locally as fallback
                 const blob = new Blob([content], { type: 'text/javascript' });
-                const url = URL.createObjectURL(blob);
+                const a = Object.assign(document.createElement('a'), { href: URL.createObjectURL(blob), download: 'projects.js' });
+                document.body.appendChild(a); a.click(); document.body.removeChild(a);
+                toast('Downloaded projects.js (set GitHub settings to deploy live)', 'info');
+                return;
+            }
 
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'projects.js';
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
+            const btn = document.getElementById('deploy-btn');
+            btn.disabled = true;
+            btn.textContent = '⏳ Deploying…';
 
-                alert("Downloaded locally! (Add your GitHub settings above to deploy LIVE directly)");
+            try {
+                const cleanRepo = repo.replace('https://github.com/', '').trim();
+                const getRes = await fetch(`https://api.github.com/repos/${cleanRepo}/contents/projects.js`, {
+                    headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3+json' }
+                });
+                let sha = '';
+                if (getRes.ok) sha = (await getRes.json()).sha;
+
+                const putRes = await fetch(`https://api.github.com/repos/${cleanRepo}/contents/projects.js`, {
+                    method: 'PUT',
+                    headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: '🚀 Portfolio update via Admin Panel', content: btoa(unescape(encodeURIComponent(content))), sha: sha || undefined })
+                });
+
+                if (putRes.ok) toast('Deployed to GitHub! Netlify is now building your site.', 'success');
+                else throw new Error((await putRes.json()).message || 'GitHub push failed');
+            } catch (err) {
+                toast('Deploy error: ' + err.message, 'error');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = '🚀 Deploy All';
             }
         }
 
-        // Initialize
-        loadSettings();
-        renderEditor();
+        // ═══════════════════════════════════════════════
+        //  HELPERS
+        // ═══════════════════════════════════════════════
+        function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+        function toast(msg, type = 'info') {
+            const wrap = document.getElementById('toast-wrap');
+            const el = document.createElement('div');
+            el.className = `toast ${type}`;
+            el.innerHTML = `<span>${msg}</span>`;
+            wrap.appendChild(el);
+            setTimeout(() => {
+                el.style.animation = 'toastOut 0.3s ease forwards';
+                setTimeout(() => el.remove(), 300);
+            }, 3500);
+        }
+
+        // Allow pressing Enter in URL field to trigger import
+        document.getElementById('url-input').addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') startImport();
+        });
     </script>
+
 </body>
 
 </html>
