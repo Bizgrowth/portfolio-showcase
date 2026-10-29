@@ -51,8 +51,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const tagsHTML = project.tags.map(tag => `<span class="tag">${tag}</span>`).join('');
 
             // Determine URL and Screenshot
-            const targetUrl = project.demoLink && project.demoLink !== '#' ? project.demoLink : (project.sourceLink && project.sourceLink !== '#' ? project.sourceLink : '#');
-            const isPlaceholderUrl = targetUrl === '#';
+            let targetUrl = project.demoLink && project.demoLink !== '#' ? project.demoLink.trim() : (project.sourceLink && project.sourceLink !== '#' ? project.sourceLink.trim() : '#');
+            let isPlaceholderUrl = targetUrl === '#';
+            if (!isPlaceholderUrl && !targetUrl.startsWith('http://') && !targetUrl.startsWith('https://')) {
+                targetUrl = 'https://' + targetUrl;
+            }
             const imageUrl = (isPlaceholderUrl || project.useCustomImage) ? project.image : `https://image.thum.io/get/width/800/crop/600/${targetUrl}`;
 
             // Construct the html string for the card
@@ -136,3 +139,5 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }, 100);
 });
+
+

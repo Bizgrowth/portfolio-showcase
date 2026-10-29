@@ -29,8 +29,8 @@ const projectData = [
             "Tailwind",
             "Prisma"
         ],
-        "demoLink": "Delicate-frangollo-0feb83.netlify.app",
-        "sourceLink": "Delicate-frangollo-0feb83.netlify.app",
+        "demoLink": "https://delicate-frangollo-0feb83.netlify.app/",
+        "sourceLink": "https://delicate-frangollo-0feb83.netlify.app/",
         "delayClass": "delay-1"
     },
     {
